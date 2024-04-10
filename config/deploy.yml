@@ -10,9 +10,9 @@ servers:
     hosts:
       - 167.71.178.142
     labels:
-      traefik.http.routers.deanout_secure.entrypoints: websecure
-      traefik.http.routers.deanout_secure.rule: Host(`deanout.com`)
-      traefik.http.routers.deanout_secure.tls: true
+      traefik.http.routers.busidevs_secure.entrypoints: websecure
+      traefik.http.routers.busidevs_secure.rule: Host(`busidevs.com`)
+      traefik.http.routers.busidevs_secure.tls: true
 
 # Credentials for your image host.
 registry:
