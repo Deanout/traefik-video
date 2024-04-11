@@ -13,7 +13,6 @@ servers:
       traefik.http.routers.busidevs_secure.entrypoints: websecure
       traefik.http.routers.busidevs_secure.rule: Host(`busidevs.com`)
       traefik.http.routers.busidevs_secure.tls: true
-
 # Credentials for your image host.
 registry:
   username: deanin
@@ -23,13 +22,29 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
-
 traefik:
   options:
     publish:
       - "443:443"
   args:
+    entryPoints.web.address: ":80"
+    entryPoints.web.http.redirections.entryPoint.to: websecure
+    entryPoints.web.http.redirections.entryPoint.scheme: https
+    entryPoints.web.http.redirections.entryPoint.permanent: true
+
     entryPoints.websecure.address: ":443"
+    entryPoints.websecure.http.tls: true # Ensure TLS is enabled for the secure entrypoint
+    api.dashboard: true
+    api.insecure: false
+  labels:
+    traefik.enable: true
+    traefik.http.routers.api.entrypoints: websecure
+    traefik.http.routers.api.rule: Host(`traefik.busidevs.com`)
+    traefik.http.routers.api.service: api@internal
+    traefik.http.routers.api.tls: true
+    traefik.http.routers.api.middlewares: auth
+    # htpasswd -nb admin password123
+    traefik.http.middlewares.auth.basicauth.users: "admin:$apr1$7Px.ihHF$TBcKagQBYORMmRS0tx9eq0"
 
 volumes:
   - "storage:/rails/storage"

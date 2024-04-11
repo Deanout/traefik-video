@@ -4,4 +4,5 @@
 #
 # Sets up a Docker network which can then be used by the application’s containers
 
-ssh user@example.com docker network create kamal
+# ssh user@example.com docker network create kamal
+ssh root@$KAMAL_HOSTS 'docker network inspect private > /dev/null 2>&1 || docker network create -d bridge private'
